@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform thirdPersonPosition; // Assign a position for third-person view in Inspector
     public Transform firstPersonPosition; // Assign a position for first-person view in Inspector
 
+    private Animator anim;
     private float rotationX = 0f;
     private Rigidbody rb;
     private bool isFirstPerson = false; // Toggle state
@@ -17,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         Cursor.lockState = CursorLockMode.Locked;
+        anim = GetComponent<Animator>();
 
         SwitchPerspective(false); // Start in third-person mode
     }
@@ -25,6 +27,11 @@ public class PlayerMovement : MonoBehaviour
     {
         HandleMovement();
         HandleCameraRotation();
+
+        anim.SetInteger("State", 0);
+
+
+        
 
         if (Input.GetKeyDown(KeyCode.P)) // Press 'P' to switch views
         {
@@ -37,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
     {
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
+
+        anim.SetInteger("Walk", 1);
 
         Vector3 moveDirection = transform.forward * moveZ + transform.right * moveX;
         moveDirection.Normalize();
